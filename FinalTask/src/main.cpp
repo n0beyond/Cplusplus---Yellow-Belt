@@ -11,7 +11,21 @@ using namespace std;
 
 string ParseEvent(istream& is) 
 {
-  // Р РµР°Р»РёР·СѓР№С‚Рµ СЌС‚Сѓ С„СѓРЅРєС†РёСЋ
+    stringstream ss;
+    
+    while (is.peek() == ' ') {
+		is.get();
+	}
+
+    string str;
+    getline(is, str);
+    return str;
+}
+
+template <typename T, typename L>
+ostream& operator<<(ostream& out, const std::pair<T, L>& p)
+{
+    return out << p.first << ' ' << p.second;
 }
 
 void TestAll();

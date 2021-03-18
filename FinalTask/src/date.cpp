@@ -1,49 +1,41 @@
-#include <date.h>
+#include "date.h"
 
 using namespace std;
 
-class Date
+Date::Date(int year_, int month_, int day_)
+	: year(year_), month(month_), day(day_) {}
+
+int Date::GetYear() const
 {
-public:
-	Date(int year_, int month_, int day_) 
-		: year(year_), month(month_), day(day_) {}
+	return year;
+}
 
-	int GetYear()
-	{
-		return year;
-	}
-	int GetYear()
-	{
-		return month;
-	}
-	int GetDay()
-	{
-		return day;
-	}
+int Date::GetMonth() const
+{
+	return month;
+}
 
-private:
-	const int year, month, day;
-};
+int Date::GetDay() const
+{
+	return day;
+}
 
 Date ParseDate(istream& is)
 {
-	string str;
-    is >> str;
     int year, month, day;
-	stringstream ss;
 
-	ss >> year;
-	ss.ignore(1);
-	ss >> month;
-	ss.ignore(1);
-	ss >> day;
-    return (Date(year, month, day));
+	is >> year;
+	is.ignore(1);
+	is >> month;
+	is.ignore(1);
+	is >> day;
+    return Date(year, month, day);
 }
 
 ostream& operator<<(ostream& os, const Date& date)
 {
 	os << setfill('0');
-	os << setw(4) << date.GetYear() << '-' << setw(2) << date.GetMonth() << '-' << setw(2) << date.GetDay();
+	os << setw(4) << date.GetYear() << "-" << setw(2) << date.GetMonth() << "-" << setw(2) << date.GetDay();
 	return os;
 }
 
@@ -61,7 +53,57 @@ bool operator<(const Date& lhs, const Date& rhs)
 	return(lhs.GetYear() < rhs.GetYear());
 }
 
+bool operator<=(const Date& lhs, const Date& rhs)
+{
+	if (lhs.GetYear() == rhs.GetYear())
+	{
+		if (lhs.GetMonth() == rhs.GetMonth())
+		{
+			return lhs.GetDay() <= rhs.GetDay();
+		}
+
+		return lhs.GetMonth() < rhs.GetMonth();
+	}
+
+	return lhs.GetYear() < rhs.GetYear();
+}
+
 bool operator==(const Date& lhs, const Date& rhs)
 {
 	return (lhs.GetYear() == rhs.GetYear() && lhs.GetMonth() == rhs.GetMonth() && lhs.GetDay() == rhs.GetDay());
+}
+
+bool operator!=(const Date& lhs, const Date& rhs)
+{
+	return lhs.GetYear() != rhs.GetYear() || lhs.GetMonth() != rhs.GetMonth() || lhs.GetDay() != rhs.GetDay();
+}
+
+bool operator>(const Date& lhs, const Date& rhs)
+{
+	if (lhs.GetYear() == rhs.GetYear())
+	{
+		if (lhs.GetMonth() == rhs.GetMonth())
+		{
+			return lhs.GetDay() > rhs.GetDay();
+		}
+
+		return lhs.GetMonth() > rhs.GetMonth();
+	}
+
+	return lhs.GetYear() > rhs.GetYear();
+}
+
+bool operator>=(const Date& lhs, const Date& rhs)
+{
+	if (lhs.GetYear() == rhs.GetYear())
+	{
+		if (lhs.GetMonth() == rhs.GetMonth())
+		{
+			return lhs.GetDay() >= rhs.GetDay();
+		}
+
+		return lhs.GetMonth() > rhs.GetMonth();
+	}
+
+	return lhs.GetYear() > rhs.GetYear();
 }
